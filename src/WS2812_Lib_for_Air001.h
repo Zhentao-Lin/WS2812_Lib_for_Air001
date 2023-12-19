@@ -6,7 +6,7 @@
  * Date		2023-12-18
  */
 
- #ifndef _WS2812_LIB_FOR_AIR_H
+#ifndef _WS2812_LIB_FOR_AIR_H
 #define _WS2812_LIB_FOR_AIR_H
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -52,7 +52,7 @@ public:
 	void setLedType(LED_TYPE t);                                //设置灯珠类型
 	void setBrightness(u8 brightness);                          //设置彩灯亮度
 
-  bool set_pixel(int index, u8 r, u8 g, u8 b);
+    bool set_pixel(int index, u8 r, u8 g, u8 b);
 
 	bool setLedColorData(int index, u32 rgb);                   //设置指定的ws2812的颜色，设置但不生效，仅是修改了数组中的颜色数据
 	bool setLedColorData(int index, u8 r, u8 g, u8 b);          //设置指定的ws2812的颜色，设置但不生效，仅是修改了数组中的颜色数据

@@ -1,5 +1,5 @@
 // WS2812_Lib_for_Air001.h
-/**
+/*
  * Brief    A library for controlling ws2812 in air001 platform.
  * Author   ZhentaoLin
  * Company  None

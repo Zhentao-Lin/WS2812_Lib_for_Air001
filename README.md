@@ -1,4 +1,4 @@
-# Freenove WS2812 Lib for Air001
+# WS2812 Lib for Air001
 
 ## Description
 This is an Arduino library for controlling ws2812b led on Air001.
@@ -11,68 +11,54 @@ Here are some simple examples.
 This example make your strip show a flowing rainbow.
 
 ```
-#include "WS2812_Lib_for_Air001.h"
+#include <Arduino.h>
+#include <EC11_Encoder.h>
 
-#define LEDS_COUNT  64
+#if defined(ARDUINO_AVR_UNO)
+const int8_t pinA = 9;
+const int8_t pinB = 10;
+#if defined(ESP32)
+const int8_t pinA = 36;
+const int8_t pinB = 39;
+#if defined(AIR001xx)
+const int8_t pinA = PA_13;
+const int8_t pinB = PA_14;
+#endif
 
-AIR001_WS2812 strip = AIR001_WS2812(LEDS_COUNT, TYPE_GRB);
+EC11Encoder encoder(pinA, pinB);
 
 void setup() {
-  strip.begin();
-  strip.setBrightness(20);  
+  Serial.begin(115200);
+  Serial.println(F("Polling in loop()"));
 }
 
 void loop() {
-  for (int j = 0; j < 255; j += 2) {
-    for (int i = 0; i < LEDS_COUNT; i++) {
-      strip.setLedColorData(i, strip.Wheel((i * 256 / LEDS_COUNT + j) & 255));
-    }
-    strip.show();
-    delay(10);
-  }  
+  encoder.service();                          
+  int encoder_change = encoder.get_change();  
+  if (encoder_change) {
+    Serial.println(encoder.get_count());    
+  }
 }
-
 ```
 
 ## Usage
 ```
-AIR001_WS2812 strip = AIR001_WS2812(LEDS_COUNT, TYPE_GRB);
+EC11Encoder encoder(pinA, pinB);
 ```
-* Construction. Create a strip object.
+* Construction. Create a encoder object.
 
 ```
-strip.begin()
+encoder.service();  
 ```
-Initialization data, ready for communication.
+* Repeat calls to get the state of the encoder.
 ```
-strip.setLedColorData(id, color);
-strip.setLedColorData(id, r, g, b);
+int encoder_change = encoder.get_change();  
 ```
-* Send the color data of the specified LED to the controller. 
-* Display color change after calling show function.
-	* id: the index of led.
-	* color: color value. egg, 0xFF0000 is RED color.
-	* r,g,b: color value. 0-255.
-```
-strip.show();
-```
-* Immediately display the color data that has been sent.
-
+* Get the status of the encoder. 
 
 ```
-strip.setLedColor(id, color);
-strip.setLedColor(id, r, g, b);
+encoder.get_count()
 ```
-* Send color data and display it immediately.
-* It is equivalent to "strip.setLedColorData(id, color); strip.show();"
-	* id: the index of led.
-	* color: color value. egg, 0xFF0000 is RED color.
-	* r,g,b: color value. 0-255.
+* Get the count from the encoder
 
-```
-strip.Wheel(i)
-```
-* A simple color picker.
-	* i: 0-255.
-<img src='extras/ColorWheel.jpg' width='100%'/>
 

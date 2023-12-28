@@ -1,4 +1,4 @@
-# Freenove WS2812 Lib for Air001
+# WS2812 Lib for Air001
 
 ## Description
 This is an Arduino library for controlling ws2812b led on Air001.
